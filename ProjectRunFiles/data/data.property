@@ -1,0 +1,4 @@
+!UPDATE IN: 26/03/2022!
+# Input browser to change browser before run: CHROME, MSEDGE (not support yet), FF#
+url = https://vgu.edu.vn/
+browser = CHROME

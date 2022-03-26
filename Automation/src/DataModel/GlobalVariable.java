@@ -21,8 +21,8 @@ public class GlobalVariable {
     public static final String PROJECT_PATH = System.getenv(ENV_VAR);
 
     /*Project Folder Path*/
-    public static final String DRIVER_FOLDER = PROJECT_PATH + "driver\\";
-    public static final String DATA_FOLDER = PROJECT_PATH + "data\\";
+    public static final String DRIVER_FOLDER = PROJECT_PATH + "\\driver\\";
+    public static final String DATA_FOLDER = PROJECT_PATH + "\\data\\";
 
 
 }

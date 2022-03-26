@@ -15,6 +15,7 @@ public class DriverFactory {
 
     /** @Author: Nguyen Toan Thang
     * @Description: Factory Design Pattern to initialize desired browser driver from local file and set it into var: driverThread
+     * @Output: This will generate desired browser with start up and clean configuration.
     * */
 
 

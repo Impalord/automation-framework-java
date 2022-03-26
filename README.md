@@ -16,6 +16,30 @@ This project using for thesis and for educational purpose only. This project bel
     ### 1.2 Target:
       - This *project* that i build to satisfy the requirement that university thesis module and also focus on automation testing for website:  [VGU](https://vgu.edu.vn/).
 
+### 2. How to use ?
+
+  - I am apparently not explain how those things work theorically. So I jump straigth to the point of _tutorial_ how to use this
+    
+   ### Set Up for Library...
+   
+   For IntellJ: __ I WILL ASSUME YOU ALL KNOW HOW TO SET UP SDK __
+        Step 1: Go to ***File***->***Project Structure***.
+        Step 2: Select ***Libraries***.
+        Step 3: Click on Add![Click on Add](/img/Tutorial1.png).
+        Step 4: Select the ***..\ProjectRunFiles\libs*** directory
+        
+   <!-- This content will not appear in the rendered Markdown -->
+   
+   ### Set Up for System Environment
+        Step 1: Search for ***Edit the system environment variables***
+        Step 2: Do like in the pic![Add System Env](/img/Tutorial2.png)
+        
+   # **THEN BOOM GO INSIDE THE TestSuite1 Class and Press Run**
+
+# *** Still in development so there will be more tutorial how to customize as your need ***
+   
+  
+
  
  
 

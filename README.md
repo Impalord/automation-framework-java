@@ -20,19 +20,19 @@ This project using for thesis and for educational purpose only. This project bel
 
   - I am apparently not explain how those things work theorically. So I jump straigth to the point of _tutorial_ how to use this
     
-   ### Set Up for Library...
+    ### Set Up for Library...
    
-   For IntellJ: __I WILL ASSUME YOU ALL KNOW HOW TO SET UP SDK__
-    - Step 1: Go to ***File***->***Project Structure***.
-    - Step 2: Select ***Libraries***.
-    - Step 3: Click on Add![](/img/Tutorial1.png).
-    - Step 4: Select the ***..\ProjectRunFiles\libs*** directory  
+    - For IntellJ: __I WILL ASSUME YOU ALL KNOW HOW TO SET UP SDK__
+      - Step 1: Go to ***File***->***Project Structure***.
+      - Step 2: Select ***Libraries***.
+      - Step 3: Click on Add![](/img/Tutorial1.png)
+      - Step 4: Select the ***..\ProjectRunFiles\libs*** directory.
         
    
 
    ### Set Up for Library... ###
    - Step 1: Search for ***Edit the system environment variables***
-   - Step 2: Do as picture[](/img/Tutorial2.png).
+   - Step 2: Do as picture![](/img/Tutorial2.png).
         
  # **THEN BOOM GO INSIDE THE TestSuite1 Class and Press Run**
 # *** Still in development so there will be more tutorial how to customize as your need ***

@@ -1,17 +1,13 @@
 <component name="libraryTable">
   <library name="selenium-java-4.0.0-alpha-1">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/selenium-java-4.0.0-alpha-1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libs/selenium-chrome-driver-4.0.0-alpha-1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libs/testng-7.5.jar!/" />
-      <root url="file://$PROJECT_DIR$/libs" />
+      <root url="file://$PROJECT_DIR$/ProjectRunFiles/libs" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/libs" />
+      <root url="file://$PROJECT_DIR$/ProjectRunFiles/libs" />
     </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/libs" recursive="false" />
-    <jarDirectory url="jar://$PROJECT_DIR$/libs/selenium-java-4.0.0-alpha-1.jar!/" recursive="false" />
-    <jarDirectory url="file://$PROJECT_DIR$/libs" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/ProjectRunFiles/libs" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/ProjectRunFiles/libs" recursive="false" type="SOURCES" />
   </library>
 </component>

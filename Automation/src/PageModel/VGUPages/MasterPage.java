@@ -1,11 +1,9 @@
 package PageModel.VGUPages;
 
-import Ultilities.ProjectConfigHolder;
-import Ultilities.ProjectConfiguration;
+import DataModel.ProjectConfigurationManage.ProjectConfiguration;
 import Ultilities.WebActions;
 import UnitBased.DriverFactory;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 

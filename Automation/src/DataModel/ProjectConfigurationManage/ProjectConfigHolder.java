@@ -1,4 +1,4 @@
-package Ultilities;
+package DataModel.ProjectConfigurationManage;
 
 public class ProjectConfigHolder {
     private String url;

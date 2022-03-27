@@ -2,12 +2,15 @@ package Ultilities;
 
 import UnitBased.DriverFactory;
 import UnitBased.InitializeTestBased;
+import com.beust.ah.A;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+
+import java.security.Key;
 import java.time.Duration;
 
 /**
@@ -60,7 +63,7 @@ public class WebActions extends InitializeTestBased {
             }
             waitUntilElementClickable(elementAttribute, name);
             Actions actions = new Actions(driver);
-            actions.moveToElement(element).click();
+            actions.moveToElement(element).click().perform();
             System.out.println("Clicked: " + name);
             Thread.sleep(3000);
         }
@@ -90,6 +93,63 @@ public class WebActions extends InitializeTestBased {
         }
     }
 
+    protected <T> void copyToClipBoard(T elementAttribute){
+        WebElement element;
+        try {
+            if(elementAttribute.getClass().getName().contains("By")){
+                element = driver.findElement((By) elementAttribute);
+            }else {
+                element = (WebElement) elementAttribute;
+            }
+            Actions actions = new Actions(driver);
+            actions.moveToElement(element).click();
+            Thread.sleep(2000);
+            actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).build().perform();
+            Thread.sleep(2000);
+            actions.keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL).build().perform();
+        }catch (TimeoutException | InterruptedException  error){
+            Assert.fail(error.getMessage());
+            System.out.println("Element is not interactable on "+driver.getTitle()+" page");
+        }
+    }
+
+    protected <T> void paste(T elementAttribute) {
+        WebElement element;
+        try {
+            if (elementAttribute.getClass().getName().contains("By")) {
+                element = driver.findElement((By) elementAttribute);
+            } else {
+                element = (WebElement) elementAttribute;
+            }
+            Actions actions = new Actions(driver);
+            actions.moveToElement(element).click();
+            Thread.sleep(2000);
+            actions.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL).build().perform();
+        } catch (TimeoutException | InterruptedException error) {
+            Assert.fail(error.getMessage());
+            System.out.println("Element is not interactable on " + driver.getTitle() + " page");
+        }
+    }
+
+    protected <T> void rightClick(T elementAttribute, String name){
+        WebElement element;
+        try{
+            if(elementAttribute.getClass().getName().contains("By")){
+                element = driver.findElement((By) elementAttribute);
+            }else {
+                element = (WebElement) elementAttribute;
+            }
+            waitUntilElementClickable(elementAttribute, name);
+            Actions actions = new Actions(driver);
+            actions.moveToElement(element).contextClick().perform();
+            System.out.println("Clicked: " + name);
+            Thread.sleep(3000);
+        }
+        catch(ElementNotInteractableException |TimeoutException | InterruptedException  error){
+            Assert.fail(error.getMessage());
+            System.out.println("Element "+name+" is not interactable");
+        }
+    }
 
 
 

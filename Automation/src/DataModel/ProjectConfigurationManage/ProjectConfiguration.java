@@ -1,11 +1,12 @@
-package Ultilities;
+package DataModel.ProjectConfigurationManage;
 
 import DataModel.GlobalVariable;
-import org.testng.annotations.Test;
+import DataModel.ProjectConfigurationManage.ProjectConfigHolder;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -34,12 +35,23 @@ public class ProjectConfiguration {
         catch (IOException exception){
             System.out.println(exception.getMessage());
             System.out.println("Could not read file");
-        }
-        finally {
-            //Can not detect the system environment we make it default
+            //set as default.
             config.setBrowser("CHROME");
             config.setUrl("https://vgu.edu.vn/");
         }
+    }
+
+    public static Properties readPropertyData(String filePath){
+        Properties props = new Properties();
+        try (InputStream inputPropsFile = new FileInputStream(filePath)
+        ){
+            props.load(inputPropsFile);
+        }
+        catch (IOException exception){
+            System.out.println(exception.getMessage());
+            System.out.println("Could not read file");
+        }
+        return props;
     }
 
     public static ProjectConfigHolder getConfig(){

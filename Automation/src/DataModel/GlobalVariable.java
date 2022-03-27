@@ -5,6 +5,8 @@ public class GlobalVariable {
      * @Description: This is the part of Data-Driven Framework, Global variable will get the system
      * path file, thus, for the sustainable, reusable, lowest maintainable cost for CI/CD implementation.
      *
+     * @Important: All the paths, system variables, filename, foldername should be changed in THIS CLASS
+     *
      * for example: I want to use the same setup for remote machine and the code would not change any after
      * got pull and build for the new system.
     * */
@@ -23,6 +25,9 @@ public class GlobalVariable {
     /*Project Folder Path*/
     public static final String DRIVER_FOLDER = PROJECT_PATH + "\\driver\\";
     public static final String DATA_FOLDER = PROJECT_PATH + "\\data\\";
+
+    /*Credential Data Path*/
+    public static final String CREDENTIAL_DATA = PROJECT_PATH + "\\data\\"+"userdata.property";
 
 
 }

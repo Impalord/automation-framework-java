@@ -1,7 +1,7 @@
 package UnitBased;
 
-import Ultilities.ProjectConfigHolder;
-import Ultilities.ProjectConfiguration;
+import DataModel.ProjectConfigurationManage.ProjectConfigHolder;
+import DataModel.ProjectConfigurationManage.ProjectConfiguration;
 import org.openqa.selenium.WebDriver;
 
 import org.testng.annotations.*;

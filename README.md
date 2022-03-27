@@ -7,7 +7,7 @@
 This project using for thesis and for educational purpose only. This project belong to Nguyen Toan Thang, if this account got deactivate due to university email got dispose, @1mpalord will be a backup. 
 
 # _IMPORTANT_#
-Please Read [How to use ?](#how-to-use) carefully to customize your and project need.
+Please Read [How to use ?](#2-how-to-use-) carefully to customize your and project need.
 
 
 ## _Introduction

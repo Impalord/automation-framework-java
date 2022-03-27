@@ -1,10 +1,14 @@
 # _Automation Framework with Selenium Webdriver_
 
 
-## _Automation Framework with Java using Data-Driven Framework and Keyword-Driven Framework (Hyrbrid method)_
+## _Automation Framework with Java using Data-Driven Framework and Keyword-Driven Framework (Hybrid method)_
 
 # _DISCLAIMER_
 This project using for thesis and for educational purpose only. This project belong to Nguyen Toan Thang, if this account got deactivate due to university email got dispose, @1mpalord will be a backup. 
+
+# _IMPORTANT_#
+Please Read [How to use ?](#how-to-use) carefully to customize your and project need.
+
 
 ## _Introduction
 
@@ -30,16 +34,26 @@ This project using for thesis and for educational purpose only. This project bel
         
    
 
-   ### Set Up for Library... ###
+   ### Set Up for System Environment ***!IMPORTANT***
    - Step 1: Search for ***Edit the system environment variables***
-   - Step 2: Do as picture![](/img/Tutorial2.png).
-        
- # **THEN BOOM GO INSIDE THE TestSuite1 Class and Press Run**
+   - Step 2: Do as picture![](/img/Tutorial2.png)
+       
+   ### Customize Configuration
+   - For file and folder name change: You can customize any thing this `data`, `libs`,`driver` folder in ***\ProjectRunFiles***.
+   ![image](https://user-images.githubusercontent.com/57009072/160287175-6dfaa93f-41d7-4499-b6d4-ff4b59d3f765.png)
+
+   
+   
+   
+   - For class customization:The only place you should configuration in this project is 'GlobalVariable.java'.
+   ![image](https://user-images.githubusercontent.com/57009072/160287007-30d01fb7-5d76-47dc-a850-dde75b0566e5.png)
+   
 # *** Still in development so there will be more tutorial how to customize as your need ***
    
   
 
- 
+
+
  
 
 

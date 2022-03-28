@@ -30,5 +30,10 @@ public class GlobalVariable {
     public static final String CREDENTIAL_DATA = PROJECT_PATH + "\\data\\"+"userdata.property";
 
 
+    /*Output File Path*/
+    public static final String LOGGER_PATH = PROJECT_PATH + "\\Output\\Log\\";
+    public static final String REPORT_PATH = PROJECT_PATH + "\\Output\\Report\\";
+
+
 }
 

@@ -1,8 +1,8 @@
 package Ultilities;
 
+import Ultilities.OutputHandle.Log;
 import UnitBased.DriverFactory;
 import UnitBased.InitializeTestBased;
-import com.beust.ah.A;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -10,7 +10,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import java.security.Key;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
@@ -23,11 +26,13 @@ import java.time.Duration;
 public class WebActions extends InitializeTestBased {
     protected WebDriverWait defaultWait;
     protected WebDriver driver;
+    protected Log logger;
 
     public WebActions(){
         super();
         driver = DriverFactory.getDriver();
         defaultWait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        logger = Log.getLog();
     }
 
 
@@ -42,7 +47,7 @@ public class WebActions extends InitializeTestBased {
                 element = driver.findElement(selector);
             } catch (Exception e) {
                 Assert.fail(e.getMessage());
-                System.out.println("Could not find such element");
+                logger.fatal("Could not find such element");
             }
         }
         return element;
@@ -64,12 +69,12 @@ public class WebActions extends InitializeTestBased {
             waitUntilElementClickable(elementAttribute, name);
             Actions actions = new Actions(driver);
             actions.moveToElement(element).click().perform();
-            System.out.println("Clicked: " + name);
+            logger.info("Clicked: " + name);
             Thread.sleep(3000);
         }
         catch(ElementNotInteractableException |TimeoutException | InterruptedException  error){
             Assert.fail(error.getMessage());
-            System.out.println("Element "+name+" is not interactable");
+            logger.fatal("Element "+name+" is not interactable");
         }
     }
 
@@ -85,11 +90,11 @@ public class WebActions extends InitializeTestBased {
             waitUntilElementDisplay(elementAttribute, name);
             Actions actions = new Actions(driver);
             actions.moveToElement(element).build().perform();
-            System.out.println("Move and hover to: " + name);
+            logger.info("Move and hover to: " + name);
             Thread.sleep(3000);
         }catch (TimeoutException | InterruptedException  error){
             Assert.fail(error.getMessage());
-            System.out.println("Element "+name+" is not appear on "+driver.getTitle()+" page");
+            logger.fatal("Element "+name+" is not appear on "+driver.getTitle()+" page");
         }
     }
 
@@ -105,11 +110,13 @@ public class WebActions extends InitializeTestBased {
             actions.moveToElement(element).click();
             Thread.sleep(2000);
             actions.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).build().perform();
+            logger.info("Pressed: Ctrl + A");
             Thread.sleep(2000);
             actions.keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL).build().perform();
+            logger.info("Copied text: " + getClipBoard());
         }catch (TimeoutException | InterruptedException  error){
             Assert.fail(error.getMessage());
-            System.out.println("Element is not interactable on "+driver.getTitle()+" page");
+            logger.fatal("Element is not interactable on "+driver.getTitle()+" page");
         }
     }
 
@@ -125,9 +132,10 @@ public class WebActions extends InitializeTestBased {
             actions.moveToElement(element).click();
             Thread.sleep(2000);
             actions.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL).build().perform();
+            logger.info("Pasted text: " + getClipBoard());
         } catch (TimeoutException | InterruptedException error) {
             Assert.fail(error.getMessage());
-            System.out.println("Element is not interactable on " + driver.getTitle() + " page");
+            logger.fatal("Element is not interactable on " + driver.getTitle() + " page");
         }
     }
 
@@ -147,7 +155,7 @@ public class WebActions extends InitializeTestBased {
         }
         catch(ElementNotInteractableException |TimeoutException | InterruptedException  error){
             Assert.fail(error.getMessage());
-            System.out.println("Element "+name+" is not interactable");
+            logger.fatal("Element "+name+" is not interactable");
         }
     }
 
@@ -162,8 +170,10 @@ public class WebActions extends InitializeTestBased {
     protected void navigateToUrl(String url){
         try{
             driver.navigate().to(url);
+            logger.info("Navigated to: " +url );
         }catch (Exception e){
             Assert.fail(e.getMessage());
+            logger.fatal("Can not navigate to: "+ url);
         }
     }
 
@@ -236,11 +246,11 @@ public class WebActions extends InitializeTestBased {
               element = (WebElement) elementAttribute;
               defaultWait.until(ExpectedConditions.visibilityOf(element));
             }
-            System.out.println("Element "+name+" is display on "+driver.getTitle()+" page");
+            logger.info("Element "+name+" is display on "+driver.getTitle()+" page");
             return true;
         }catch (TimeoutException | ElementNotVisibleException e){
             Assert.fail(e.getMessage());
-            System.out.println("No such element present");
+            logger.fatal("No such element present");
         }
         return false;
     }
@@ -255,13 +265,27 @@ public class WebActions extends InitializeTestBased {
                 element = (WebElement) elementAttribute;
                 defaultWait.until(ExpectedConditions.elementToBeClickable(element));
             }
-            System.out.println("Element "+name+" is Clickable");
+            logger.info("Element "+name+" is Clickable");
             return true;
         }catch (ElementNotInteractableException | TimeoutException e){
             Assert.fail(e.getMessage());
-            System.out.println("No such element clickable");
+            logger.fatal("No such element clickable");
         }
         return false;
     }
 
+    /**
+     * Windows Utilities
+    * */
+    public String getClipBoard(){
+        try {
+            return (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+        } catch (HeadlessException | IOException | UnsupportedFlavorException e) {
+            e.printStackTrace();
+        }
+        finally {
+            logger.error("No such text in clipboard ");
+        }
+        return "";
+    }
 }

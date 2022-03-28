@@ -3,8 +3,10 @@ package Ultilities.OutputHandle;
 import DataModel.GlobalVariable;
 import org.apache.log4j.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -57,10 +59,13 @@ public class Log {
     private void createLogFile(String ID, String methodName, String currentBrowser) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("M-d_HHmmss");
         Path path = Paths.get(GlobalVariable.LOGGER_PATH);
-        try{
-            logWriter = new PrintWriter(path +"\\Run_"+ ID +"_"+methodName+"_"+currentBrowser+"_"+dateFormat.format(Calendar.getInstance().getTime())+".txt");
-        }catch (IOException error){
-            error.printStackTrace();
+        if(!Files.exists(path)) {
+            try {
+                Files.createDirectories(path);
+                logWriter = new PrintWriter(path + "\\Run_" + ID + "_" + methodName + "_" + currentBrowser + "_" + dateFormat.format(Calendar.getInstance().getTime()) + ".txt");
+            } catch (IOException error) {
+                error.printStackTrace();
+            }
         }
     }
 

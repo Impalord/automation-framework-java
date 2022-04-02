@@ -3,6 +3,7 @@ package PageModel.VGUPages;
 import DataModel.ProjectConfigurationManage.ProjectConfiguration;
 import Ultilities.WebActions;
 import UnitBased.DriverFactory;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -30,5 +31,10 @@ public class MasterPage extends WebActions {
 
     public void accessToVGUPage(){
         navigateToUrl(ProjectConfiguration.getConfig().getUrl());
+    }
+
+    public void clickCloseBanner(){
+        waitPageLoaded();
+        click(findElement(By.xpath("//a[@title = 'Close']")), "Close Button");
     }
 }

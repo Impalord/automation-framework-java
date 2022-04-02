@@ -1,6 +1,7 @@
 package Ultilities.OutputHandle;
 
 import DataModel.GlobalVariable;
+import Ultilities.JavaUtils.JavaUtils;
 import org.apache.log4j.*;
 
 import java.io.File;
@@ -37,9 +38,9 @@ public class Log {
         log4J.info(message);
     }
 
-    public void error(String message){
-        logWriter.write("Error: "+ message +System.getProperty("line.separator"));
-        log4J.error(message);
+    public void error(String message, String errorTrace){
+        logWriter.write("Error: "+ message +System.getProperty("line.separator")+ " " + errorTrace + System.getProperty("line.separator"));
+        log4J.error(message + System.getProperty("line.separator") + errorTrace);
     }
 
     public void fatal(String message){
@@ -57,15 +58,19 @@ public class Log {
      * Create an external .txt file then use PrintWriter behavior as logger for outputFile
      */
     private void createLogFile(String ID, String methodName, String currentBrowser) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("M-d_HHmmss");
         Path path = Paths.get(GlobalVariable.LOGGER_PATH);
         if(!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
-                logWriter = new PrintWriter(path + "\\Run_" + ID + "_" + methodName + "_" + currentBrowser + "_" + dateFormat.format(Calendar.getInstance().getTime()) + ".txt");
             } catch (IOException error) {
                 error.printStackTrace();
             }
+        }
+        try {
+            logWriter = new PrintWriter(path + "\\Run_" + ID + "_" + methodName
+                    + "_" + currentBrowser + "_" + JavaUtils.getCurrentDateTime() + ".txt");
+        }catch (IOException error){
+            error.printStackTrace();
         }
     }
 

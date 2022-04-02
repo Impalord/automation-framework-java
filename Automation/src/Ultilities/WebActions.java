@@ -1,6 +1,8 @@
 package Ultilities;
 
 import Ultilities.OutputHandle.Log;
+import Ultilities.OutputHandle.Reporter;
+import Ultilities.OutputHandle.TestResult;
 import UnitBased.DriverFactory;
 import UnitBased.InitializeTestBased;
 import org.openqa.selenium.*;
@@ -10,11 +12,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import javax.management.OperationsException;
+import javax.naming.OperationNotSupportedException;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Arrays;
 
 /**
  * @Description: WebActions Class will contain actions which perform on a page, this will use generated driver
@@ -27,9 +32,11 @@ public class WebActions extends InitializeTestBased {
     protected WebDriverWait defaultWait;
     protected WebDriver driver;
     protected Log logger;
+    protected TestResult testResult;
 
     public WebActions(){
         super();
+        testResult = new TestResult();
         driver = DriverFactory.getDriver();
         defaultWait = new WebDriverWait(driver, Duration.ofSeconds(30));
         logger = Log.getLog();
@@ -46,7 +53,7 @@ public class WebActions extends InitializeTestBased {
             try {
                 element = driver.findElement(selector);
             } catch (Exception e) {
-                Assert.fail(e.getMessage());
+                testResult.setFailed("Could not find such element", e);
                 logger.fatal("Could not find such element");
             }
         }
@@ -70,10 +77,11 @@ public class WebActions extends InitializeTestBased {
             Actions actions = new Actions(driver);
             actions.moveToElement(element).click().perform();
             logger.info("Clicked: " + name);
+            Reporter.reportEvent("Clicked: " + name);
             Thread.sleep(3000);
         }
         catch(ElementNotInteractableException |TimeoutException | InterruptedException  error){
-            Assert.fail(error.getMessage());
+            testResult.setFailed("Element "+name+" is not interactable", error);
             logger.fatal("Element "+name+" is not interactable");
         }
     }
@@ -91,9 +99,10 @@ public class WebActions extends InitializeTestBased {
             Actions actions = new Actions(driver);
             actions.moveToElement(element).build().perform();
             logger.info("Move and hover to: " + name);
+            Reporter.reportEvent("Move and hover to: " + name);
             Thread.sleep(3000);
         }catch (TimeoutException | InterruptedException  error){
-            Assert.fail(error.getMessage());
+            testResult.setFailed("Element "+name+" is not appear on "+driver.getTitle()+" page", error);
             logger.fatal("Element "+name+" is not appear on "+driver.getTitle()+" page");
         }
     }
@@ -114,8 +123,9 @@ public class WebActions extends InitializeTestBased {
             Thread.sleep(2000);
             actions.keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL).build().perform();
             logger.info("Copied text: " + getClipBoard());
+            Reporter.reportEvent("Copied text: " + getClipBoard());
         }catch (TimeoutException | InterruptedException  error){
-            Assert.fail(error.getMessage());
+            testResult.setFailed("Element is not interactable on "+driver.getTitle()+" page", error);
             logger.fatal("Element is not interactable on "+driver.getTitle()+" page");
         }
     }
@@ -133,8 +143,9 @@ public class WebActions extends InitializeTestBased {
             Thread.sleep(2000);
             actions.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL).build().perform();
             logger.info("Pasted text: " + getClipBoard());
+            Reporter.reportEvent("Pasted text: " + getClipBoard());
         } catch (TimeoutException | InterruptedException error) {
-            Assert.fail(error.getMessage());
+            testResult.setFailed("Element is not interactable on " + driver.getTitle() + " page", error);
             logger.fatal("Element is not interactable on " + driver.getTitle() + " page");
         }
     }
@@ -150,12 +161,14 @@ public class WebActions extends InitializeTestBased {
             waitUntilElementClickable(elementAttribute, name);
             Actions actions = new Actions(driver);
             actions.moveToElement(element).contextClick().perform();
-            System.out.println("Clicked: " + name);
+            logger.info("Clicked: " + name);
+            Reporter.reportEvent("Clicked: " + name);
             Thread.sleep(3000);
         }
         catch(ElementNotInteractableException |TimeoutException | InterruptedException  error){
-            Assert.fail(error.getMessage());
             logger.fatal("Element "+name+" is not interactable");
+            testResult.setFailed("Element "+name+" is not interactable", error);
+
         }
     }
 
@@ -171,9 +184,10 @@ public class WebActions extends InitializeTestBased {
         try{
             driver.navigate().to(url);
             logger.info("Navigated to: " +url );
+            Reporter.reportEvent("Navigated to: " +url);
         }catch (Exception e){
-            Assert.fail(e.getMessage());
             logger.fatal("Can not navigate to: "+ url);
+            testResult.setFailed("Can not navigate to: "+ url, e);
         }
     }
 
@@ -187,10 +201,10 @@ public class WebActions extends InitializeTestBased {
             }
             Thread.sleep(2000);
             driver.switchTo().frame(iFrame);
-            System.out.println("Switched to frame");
+            logger.info("Switched to frame");
+            Reporter.reportEvent("Switched to frame");
         }catch (InterruptedException | TimeoutException | ElementNotInteractableException error){
-            Assert.fail(error.getMessage());
-            System.out.println("Could not switch to frame");
+            testResult.setFailed("Could not switch to frame", error);
         }
     }
 
@@ -208,10 +222,10 @@ public class WebActions extends InitializeTestBased {
             }else {
                  element = (WebElement) elementAttribute;
             }
-            Assert.assertTrue(element.isDisplayed(), "Element"+ name +" was visible");
-        }catch(Exception e){
-            Assert.fail(e.getMessage());
-            System.out.println("Element was not displayed" + name);
+            testResult.assertStep(element.isDisplayed(), "Element "+ name +" was visible");
+        }catch(TimeoutException e){
+            testResult.setFailed("Element was not displayed " + name, e);
+            System.out.println("Element was not displayed " + name);
         }
     }
 
@@ -247,9 +261,10 @@ public class WebActions extends InitializeTestBased {
               defaultWait.until(ExpectedConditions.visibilityOf(element));
             }
             logger.info("Element "+name+" is display on "+driver.getTitle()+" page");
+            Reporter.reportEvent("Element "+name+" is display on "+driver.getTitle()+" page");
             return true;
         }catch (TimeoutException | ElementNotVisibleException e){
-            Assert.fail(e.getMessage());
+            testResult.setFailed("No such element present", e);
             logger.fatal("No such element present");
         }
         return false;
@@ -266,9 +281,10 @@ public class WebActions extends InitializeTestBased {
                 defaultWait.until(ExpectedConditions.elementToBeClickable(element));
             }
             logger.info("Element "+name+" is Clickable");
+            Reporter.reportEvent("Element "+name+" is Clickable");
             return true;
         }catch (ElementNotInteractableException | TimeoutException e){
-            Assert.fail(e.getMessage());
+            testResult.setFailed("No such element clickable", e);
             logger.fatal("No such element clickable");
         }
         return false;
@@ -281,10 +297,8 @@ public class WebActions extends InitializeTestBased {
         try {
             return (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
         } catch (HeadlessException | IOException | UnsupportedFlavorException e) {
-            e.printStackTrace();
-        }
-        finally {
-            logger.error("No such text in clipboard ");
+            testResult.setFailed("No such text in clipboard ", e);
+            logger.error("No such text in clipboard ", Arrays.toString(e.getStackTrace()));
         }
         return "";
     }

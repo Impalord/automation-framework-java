@@ -33,7 +33,7 @@ public class GlobalVariable {
     /*Output File Path*/
     public static final String LOGGER_PATH = PROJECT_PATH + "\\Output\\Log\\";
     public static final String REPORT_PATH = PROJECT_PATH + "\\Output\\Report\\";
-
+    public static final String SCREEN_PATH = PROJECT_PATH + "\\Output\\Screen\\";
 
 }
 

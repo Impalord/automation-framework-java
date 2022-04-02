@@ -1,10 +1,13 @@
 package UnitBased;
 
+import DataModel.GlobalVariable;
 import DataModel.ProjectConfigurationManage.ProjectConfigHolder;
 import DataModel.ProjectConfigurationManage.ProjectConfiguration;
 import Ultilities.OutputHandle.Log;
+import Ultilities.OutputHandle.ReportManagement;
 import org.openqa.selenium.WebDriver;
 
+import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 
@@ -12,12 +15,15 @@ public class InitializeTestBased {
 
     protected WebDriver driver;
     protected Log logger;
+    protected ReportManagement report;
 
-    @BeforeTest
-    public synchronized void beforeRun(){
+    @BeforeMethod
+    public synchronized void beforeRun(ITestResult context){
         openBrowser();
-        Log.setLog(null,null, ProjectConfiguration.getBrowser());
+        Log.setLog(context.getMethod().getId(),context.getMethod().getMethodName(), ProjectConfiguration.getBrowser());
         logger = Log.getLog();
+        ReportManagement.setReport(context.getMethod().getId(),context.getMethod().getMethodName(), ProjectConfiguration.getBrowser());
+        report = ReportManagement.getReport();
     }
 
     private void openBrowser(){
@@ -29,10 +35,20 @@ public class InitializeTestBased {
         driver = DriverFactory.getDriver();
     }
 
-    @AfterTest
-    public synchronized void tearDown(){
-        logger.flush();
-        driver.quit();
+    @AfterMethod
+    public synchronized void tearDown(ITestResult result){
+        switch (result.getStatus()){
+            case 2, 3:
+                report.captureScreenOnFail();
+                break;
+            case 1:
+                report.flushReport();
+                logger.flush();
+                driver.quit();
+                break;
+            default:
+                throw new RuntimeException();
+        }
     }
 
 }

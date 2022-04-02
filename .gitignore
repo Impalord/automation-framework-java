@@ -5,6 +5,18 @@
 *.log
 *.txt
 
+#Report file
+*.html
+*.css
+*.otf
+*.svg
+*.ttf
+*.woff
+*.js
+*.png
+*.woff2
+
+
 # BlueJ files
 *.ctxt
 

@@ -1,10 +1,15 @@
 package Ultilities.OutputHandle;
 
 import DataModel.GlobalVariable;
+import Ultilities.JavaUtils.JavaUtils;
+import UnitBased.DriverFactory;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.gherkin.model.And;
 import com.aventstack.extentreports.gherkin.model.Feature;
+import com.aventstack.extentreports.gherkin.model.Scenario;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
@@ -13,11 +18,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public abstract class ReportManagement {
+/**
+ * @Description: Implement Extend Report with inheritance using Ghrekin-Style Report (BDD)
+ *
+ * */
+
+public class ReportManagement {
 
     private static final ThreadLocal<ReportManagement> reportThread = new ThreadLocal<>();
-    protected static ExtentTest featureTest;
     protected static ExtentReports reporter;
+    private static int steps = 1;
+    protected static ExtentTest featureTest;
+    protected static ExtentTest scenarioStep;
     protected ReportManagement(String id, String testName, String browser){
         configReport(id +"_"+testName+"_"+browser);
     }
@@ -49,20 +61,44 @@ public abstract class ReportManagement {
 
     public static void setReport(String id, String testName, String browser)
     {
-        reportThread.set(new Reporter(id, testName, browser));
+        reportThread.set(new ReportManagement(id, testName, browser));
     }
 
     public static ReportManagement getReport(){
         return reportThread.get();
     }
 
+
+
+    public static void startStep(String info){
+        scenarioStep = featureTest.createNode(Scenario.class, "Step "+steps+":" +info);
+    }
+
+    public static void endStep(){
+        steps++;
+    }
+
+    public void reportEvent(String info){
+        scenarioStep.createNode(And.class, info);
+    }
+
+    public static void captureScreen() {
+        try{
+            if (!Files.exists(Paths.get(GlobalVariable.SCREEN_PATH))) {
+                Files.createDirectories(Paths.get(GlobalVariable.SCREEN_PATH));
+            }
+        }catch (IOException error){
+            error.printStackTrace();
+        }finally {
+            String screenshotPath = JavaUtils.captureScreenShot(GlobalVariable.SCREEN_PATH, DriverFactory.getDriver());
+            scenarioStep.createNode(And.class, "Screenshot.png").addScreenCaptureFromPath(screenshotPath)
+                    .info(MediaEntityBuilder.createScreenCaptureFromBase64String(screenshotPath).build());
+        }
+    }
+
+
     public void flushReport() {
         reporter.flush();
     }
 
-    public void captureScreenOnFail(){
-        String path = GlobalVariable.SCREEN_PATH +"\\failed.png";
-        featureTest.addScreenCaptureFromPath(path)
-                .info(MediaEntityBuilder.createScreenCaptureFromPath(path).build());
-    }
 }

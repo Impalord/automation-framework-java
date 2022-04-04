@@ -4,14 +4,18 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.gherkin.model.Then;
 import org.testng.Assert;
 
-public class TestResult extends Reporter{
+/**
+ * Behave as the log and final call for a report
+* */
+
+public class TestResult extends ReportManagement{
     public TestResult(){
     }
 
     public void setPassed(String info, String stepDescription){
         Log.getLog().info(info);
-        Assert.assertTrue(true, info);
         scenarioStep.createNode(Then.class , info).pass(stepDescription);
+        Assert.assertTrue(true, info);
     }
 
     public void assertStep(Boolean condition, String stepDescription){
@@ -26,7 +30,7 @@ public class TestResult extends Reporter{
 
     public void setFailed(String info, Throwable e){
         Log.getLog().error(info, e.getMessage());
-        Assert.fail(info + System.getProperty("line.seperator")+ e.getMessage());
         scenarioStep.createNode(Then.class, info).fail(info + " " + e);
+        Assert.fail(info + System.getProperty("line.seperator")+ e.getMessage());
     }
 }

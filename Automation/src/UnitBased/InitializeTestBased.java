@@ -1,6 +1,5 @@
 package UnitBased;
 
-import DataModel.GlobalVariable;
 import DataModel.ProjectConfigurationManage.ProjectConfigHolder;
 import DataModel.ProjectConfigurationManage.ProjectConfiguration;
 import Ultilities.OutputHandle.Log;
@@ -37,18 +36,15 @@ public class InitializeTestBased {
 
     @AfterMethod
     public synchronized void tearDown(ITestResult result){
-        switch (result.getStatus()){
-            case 2, 3:
-                report.captureScreenOnFail();
-                break;
-            case 1:
-                report.flushReport();
-                logger.flush();
-                driver.quit();
-                break;
-            default:
-                throw new RuntimeException();
+        switch (result.getStatus()) {
+            case 2, 3, 1 -> {
+                ReportManagement.captureScreen();
+            }
+            default -> throw new RuntimeException();
         }
+        report.flushReport();
+        logger.flush();
+        driver.quit();
     }
 
 }

@@ -27,6 +27,7 @@ public class DriverFactory {
                 chromeOptions.addArguments("--start-maximized");
                 chromeOptions.addArguments("--incognito");
                 chromeOptions.addArguments("disable-infobars");
+                chromeOptions.addArguments("--remote-allow-origins=*");
                 driverThread.set(new ChromeDriver(chromeOptions));
             }
             case GlobalVariable.FF -> {

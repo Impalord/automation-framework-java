@@ -12,7 +12,7 @@ import java.util.Properties;
 
 /**
  * @Author: Nguyen Toan Thang
- * @Description: This following technique call Keyword-Driven Framework.
+ * @Description: This following technique call Data-Driven Framework.
  * @Purpose: To read property file and get keyword to get data from external property file
  */
 

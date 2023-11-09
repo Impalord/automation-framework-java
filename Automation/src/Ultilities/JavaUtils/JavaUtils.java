@@ -47,4 +47,5 @@ public class JavaUtils {
         }
         return encodedBase64;
     }
+
 }
